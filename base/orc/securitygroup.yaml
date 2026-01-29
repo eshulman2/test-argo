@@ -1,0 +1,32 @@
+apiVersion: openstack.k-orc.cloud/v1alpha1
+kind: SecurityGroup
+metadata:
+  name: apache-demo-sg
+spec:
+  cloudCredentialsRef:
+    cloudName: psi
+    secretName: openstack-clouds
+  managementPolicy: managed
+  resource:
+    name: apache-demo-sg
+    description: Security group for Apache demo server
+    stateful: true
+    rules:
+      - direction: ingress
+        ethertype: IPv4
+        protocol: tcp
+        portRange:
+          min: 22
+          max: 22
+        remoteIPPrefix: 0.0.0.0/0
+      - direction: ingress
+        ethertype: IPv4
+        protocol: tcp
+        portRange:
+          min: 80
+          max: 80
+        remoteIPPrefix: 0.0.0.0/0
+      - direction: ingress
+        ethertype: IPv4
+        protocol: icmp
+        remoteIPPrefix: 0.0.0.0/0

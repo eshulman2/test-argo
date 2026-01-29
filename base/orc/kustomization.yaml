@@ -7,6 +7,7 @@ resources:
   - subnet.yaml
   - router.yaml
   - router-interface.yaml
+  - securitygroup.yaml
   - port.yaml
   - flavor.yaml
   - image.yaml

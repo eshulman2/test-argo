@@ -12,3 +12,5 @@ spec:
     networkRef: apache-demo-network
     addresses:
       - subnetRef: apache-demo-subnet
+    securityGroupRefs:
+      - apache-demo-sg
