@@ -1,0 +1,12 @@
+apiVersion: openstack.k-orc.cloud/v1alpha1
+kind: FloatingIP
+metadata:
+  name: apache-server-fip
+spec:
+  cloudCredentialsRef:
+    cloudName: psi
+    secretName: openstack-clouds
+  managementPolicy: managed
+  resource:
+    floatingNetworkRef: external-network
+    portRef: apache-server-port

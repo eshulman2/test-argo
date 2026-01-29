@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - network.yaml
+  - external-network.yaml
+  - subnet.yaml
+  - router.yaml
+  - router-interface.yaml
+  - port.yaml
+  - flavor.yaml
+  - image.yaml
+  - keypair.yaml
+  - userdata-secret.yaml
+  - server.yaml
+  - floatingip.yaml

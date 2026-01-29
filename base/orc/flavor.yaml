@@ -1,0 +1,12 @@
+apiVersion: openstack.k-orc.cloud/v1alpha1
+kind: Flavor
+metadata:
+  name: apache-flavor
+spec:
+  cloudCredentialsRef:
+    cloudName: psi
+    secretName: openstack-clouds
+  managementPolicy: unmanaged
+  import:
+    filter:
+      name: PnTAE.CPU_4_Memory_4096_Disk_10

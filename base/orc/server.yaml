@@ -1,0 +1,19 @@
+apiVersion: openstack.k-orc.cloud/v1alpha1
+kind: Server
+metadata:
+  name: apache-server
+spec:
+  cloudCredentialsRef:
+    cloudName: psi
+    secretName: openstack-clouds
+  managementPolicy: managed
+  resource:
+    name: apache-demo-server
+    imageRef: centos-stream-9
+    flavorRef: apache-flavor
+    ports:
+      - portRef: apache-server-port
+    keypairRef: apache-demo-keypair
+    userData:
+      secretRef: apache-userdata
+    configDrive: true

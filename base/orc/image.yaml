@@ -1,0 +1,12 @@
+apiVersion: openstack.k-orc.cloud/v1alpha1
+kind: Image
+metadata:
+  name: centos-stream-9
+spec:
+  cloudCredentialsRef:
+    cloudName: psi
+    secretName: openstack-clouds
+  managementPolicy: unmanaged
+  import:
+    filter:
+      name: CentOS-Stream-9-latest

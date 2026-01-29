@@ -1,0 +1,11 @@
+apiVersion: openstack.k-orc.cloud/v1alpha1
+kind: RouterInterface
+metadata:
+  name: apache-demo-router-interface
+spec:
+  cloudCredentialsRef:
+    cloudName: psi
+    secretName: openstack-clouds
+  type: Subnet
+  routerRef: apache-demo-router
+  subnetRef: apache-demo-subnet

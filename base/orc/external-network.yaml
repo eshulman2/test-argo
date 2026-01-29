@@ -1,0 +1,11 @@
+apiVersion: openstack.k-orc.cloud/v1alpha1
+kind: Network
+metadata:
+  name: external-network
+spec:
+  cloudCredentialsRef:
+    cloudName: psi
+    secretName: openstack-clouds
+  managementPolicy: unmanaged
+  import:
+    id: 14c15d33-175c-424e-88ba-361a875e0c5c

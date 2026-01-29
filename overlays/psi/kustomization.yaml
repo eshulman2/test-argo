@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: orc-system
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      group: openstack.k-orc.cloud
+      version: v1alpha1
+      kind: KeyPair
+      name: apache-demo-keypair
+    patch: |-
+      - op: replace
+        path: /spec/resource/publicKey
+        value: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCt4X4vjbhU2GJ+2AlYsM67yRGu3EfAddm1mrM3JXaDGlYj4Q68Y501KF9d9Oa+v1xIVzwDHHPcmgTmr8bHwMzQ49Y73SapYfvdGsotr3FMyNZ6xvetqG+rEI9WjHsZD1V2578w2DTi9zQlR2YmHsuv0JPqfG595FXjfpY+OJRUAjQKH2TknORMfzGs5L36PJ/KPaQ/pzCYpXouN83HRiwLmNxlZgbs30iSiE120cSFGQTjAO02qD2YFd8kd8L86zK0gcFggtUVHs7J99S6910hjkAtswBD7PrcjbEPSTFR4brVVIELP83DCOOWfXqR9OON8i0syJSa9+vVaaLjP63b eshulman@eshulman.remote.csb"

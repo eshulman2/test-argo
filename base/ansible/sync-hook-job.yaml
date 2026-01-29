@@ -1,0 +1,76 @@
+# PostSync Hook - Fetches FloatingIP and creates ConfigMap
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fetch-floating-ip
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: ansible-hook-sa
+      restartPolicy: Never
+      containers:
+        - name: fetch-ip
+          image: bitnami/kubectl:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+              echo "Waiting for FloatingIP..."
+
+              for i in {1..60}; do
+                FLOATING_IP=$(kubectl get floatingip apache-server-fip \
+                  -o jsonpath='{.status.resource.floatingIP}' 2>/dev/null || true)
+
+                if [[ -n "$FLOATING_IP" && "$FLOATING_IP" != "null" ]]; then
+                  echo "FloatingIP: $FLOATING_IP"
+                  break
+                fi
+                echo "Waiting... $i/60"
+                sleep 5
+              done
+
+              if [[ -z "$FLOATING_IP" || "$FLOATING_IP" == "null" ]]; then
+                echo "ERROR: FloatingIP not assigned"
+                exit 1
+              fi
+
+              kubectl create configmap apache-server-config \
+                --from-literal=server_ip="$FLOATING_IP" \
+                --dry-run=client -o yaml | kubectl apply -f -
+
+              echo "Done! Access: http://$FLOATING_IP"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ansible-hook-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ansible-hook-role
+rules:
+  - apiGroups: ["openstack.k-orc.cloud"]
+    resources: ["floatingips"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ansible-hook-rolebinding
+subjects:
+  - kind: ServiceAccount
+    name: ansible-hook-sa
+roleRef:
+  kind: Role
+  name: ansible-hook-role
+  apiGroup: rbac.authorization.k8s.io

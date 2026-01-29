@@ -1,0 +1,14 @@
+apiVersion: openstack.k-orc.cloud/v1alpha1
+kind: Port
+metadata:
+  name: apache-server-port
+spec:
+  cloudCredentialsRef:
+    cloudName: psi
+    secretName: openstack-clouds
+  managementPolicy: managed
+  resource:
+    name: apache-demo-port
+    networkRef: apache-demo-network
+    addresses:
+      - subnetRef: apache-demo-subnet
