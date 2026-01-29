@@ -1,0 +1,10 @@
+apiVersion: automation.ansible.com/v1alpha1
+kind: AnsibleJob
+metadata:
+  name: test-ansible
+spec:
+  # The playbook to run from your git repo
+  playbook: "playbooks/some_playbook.yaml"
+  # Extra variables to pass to the playbook
+  extra_vars:
+    some_var: "value"

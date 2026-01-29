@@ -1,0 +1,7 @@
+---
+- name: Test
+  hosts: localhost
+  tasks:
+    - name: Test
+      ansible.builtin.debug:
+        msg: "banana"
