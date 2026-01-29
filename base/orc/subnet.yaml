@@ -16,4 +16,6 @@ spec:
     allocationPools:
       - start: 196.125.124.10
         end: 196.125.124.200
-    gateway: 196.125.124.1
+    gateway:
+      type: IP
+      ip: 196.125.124.1
